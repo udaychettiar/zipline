@@ -19,9 +19,10 @@ DTINDEX_NOT_INFER_TS_ERROR = "Got DatetimeIndex for sid %d.\n" \
     "Pass `infer_timestamps=True` to use the first date in" \
     " `all_dates` as implicit timestamp."
 
-DF_NO_TS_NOT_INFER_TS_ERROR = "Got DataFrame without a '%r' column for sid %d.\n" \
-    "Pass `infer_timestamps=True` to use the first " \
-    "date in `all_dates` as implicit timestamp."
+DF_NO_TS_NOT_INFER_TS_ERROR = "Got DataFrame without a '%r' column for sid " \
+                              "%d.\nPass `infer_timestamps=True` to use the " \
+                              "first date in `all_dates` as implicit " \
+                              "timestamp."
 
 TS_FIELD_NAME = "timestamp"
 SID_FIELD_NAME = "sid"
