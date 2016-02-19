@@ -1,6 +1,4 @@
-tests/pipeline/test_events.pyimport abc
-
-import numpy as np
+import abc
 import pandas as pd
 from six import iteritems
 from toolz import merge
