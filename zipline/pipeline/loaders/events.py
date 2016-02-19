@@ -9,20 +9,20 @@ from .utils import next_date_frame, previous_date_frame, previous_value
 
 WRONG_COLS_ERROR = "Expected columns %s for sid %s but got columns %s."
 
-BAD_DATA_FORMAT_ERROR = "Data for sid %s must be in DataFrame, " \
-    "Series, or DatetimeIndex."
+BAD_DATA_FORMAT_ERROR = ("Data for sid %s must be in DataFrame, "
+                         "Series, or DatetimeIndex.")
 
-SERIES_NO_DTINDEX_ERROR = "Got Series for sid %d, but index was not " \
-                      "DatetimeIndex."
+SERIES_NO_DTINDEX_ERROR = ("Got Series for sid %d, but index was not "
+                           "DatetimeIndex.")
 
-DTINDEX_NOT_INFER_TS_ERROR = "Got DatetimeIndex for sid %d.\n" \
-    "Pass `infer_timestamps=True` to use the first date in" \
-    " `all_dates` as implicit timestamp."
+DTINDEX_NOT_INFER_TS_ERROR = ("Got DatetimeIndex for sid %d.\n"
+                              "Pass `infer_timestamps=True` to use the first "
+                              "date in `all_dates` as implicit timestamp.")
 
-DF_NO_TS_NOT_INFER_TS_ERROR = "Got DataFrame without a '%r' column for sid " \
-                              "%d.\nPass `infer_timestamps=True` to use the " \
-                              "first date in `all_dates` as implicit " \
-                              "timestamp."
+DF_NO_TS_NOT_INFER_TS_ERROR = ("Got DataFrame without a '%r' column for sid "
+                               "%d.\nPass `infer_timestamps=True` to use the "
+                               "first date in `all_dates` as implicit "
+                               "timestamp.")
 
 TS_FIELD_NAME = "timestamp"
 SID_FIELD_NAME = "sid"

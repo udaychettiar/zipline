@@ -98,8 +98,7 @@ class EventLoaderTestCase(TestCase):
 
     def test_no_expected_cols_defined(self):
         events_by_sid = {0: pd.DataFrame({ANNOUNCEMENT_FIELD_NAME: dtx})}
-        assert_loader_error(events_by_sid, TypeError,
-                                 ABSTRACT_METHODS_ERROR)
+        assert_loader_error(events_by_sid, TypeError, ABSTRACT_METHODS_ERROR)
 
 
     def test_wrong_cols(self):
@@ -111,7 +110,6 @@ class EventLoaderTestCase(TestCase):
                 EventDataSetLoader.expected_cols, 0, wrong_col_name
             )
         )
-
 
     @parameterized.expand([
         # DataFrame without timestamp column and infer_timestamps = True
@@ -147,7 +145,6 @@ class EventLoaderTestCase(TestCase):
             expected,
             check_names=False
         )
-
 
     @parameterized.expand([
         # DataFrame without timestamp column and infer_timestamps = True
