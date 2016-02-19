@@ -22,7 +22,7 @@ from zipline.pipeline.factors.events import (
 from zipline.pipeline.loaders.earnings import EarningsCalendarLoader
 from zipline.pipeline.loaders.blaze import (
     ANNOUNCEMENT_FIELD_NAME,
-    BlazeEarningsLoader,
+    BlazeEarningsCalendarLoader,
     SID_FIELD_NAME,
     TS_FIELD_NAME,
 )
@@ -338,7 +338,7 @@ class EarningsCalendarLoaderTestCase(TestCase):
 
 
 class BlazeEarningsCalendarLoaderTestCase(EarningsCalendarLoaderTestCase):
-    loader_type = BlazeEarningsLoader
+    loader_type = BlazeEarningsCalendarLoader
 
     def loader_args(self, dates):
         _, mapping = super(

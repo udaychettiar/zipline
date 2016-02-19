@@ -19,14 +19,14 @@ from .buyback_auth import (
 )
 from .earnings import (
     ANNOUNCEMENT_FIELD_NAME,
-    BlazeEarningsLoader,
+    BlazeEarningsCalendarLoader,
 )
 
 __all__ = (
     'AD_FIELD_NAME',
     'ANNOUNCEMENT_FIELD_NAME',
     'BlazeCashBuybackAuthorizationsLoader',
-    'BlazeEarningsLoader',
+    'BlazeEarningsCalendarLoader',
     'BlazeLoader',
     'BlazeShareBuybackAuthorizationsLoader',
     'BUYBACK_ANNOUNCEMENT_FIELD_NAME',

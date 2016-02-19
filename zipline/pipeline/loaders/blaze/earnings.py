@@ -8,7 +8,7 @@ from zipline.pipeline.loaders.earnings import EarningsCalendarLoader
 from .events import BlazeEventsLoader
 
 
-class BlazeEarningsLoader(BlazeEventsLoader):
+class BlazeEarningsCalendarLoader(BlazeEventsLoader):
     """A pipeline loader for the ``EarningsCalendar`` dataset that loads
     data from a blaze expression.
 
@@ -68,7 +68,7 @@ class BlazeEarningsLoader(BlazeEventsLoader):
                  dataset=EarningsCalendar,
                  **kwargs):
         super(
-            BlazeEarningsLoader, self
+            BlazeEarningsCalendarLoader, self
         ).__init__(expr, dataset=dataset,
                    resources=resources, odo_kwargs=odo_kwargs,
                    data_query_time=data_query_time,
