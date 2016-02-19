@@ -79,9 +79,9 @@ def previous_date_frame(date_index, events_by_sid, event_date_field_name):
     -------
     previous_events: pd.DataFrame
         A DataFrame where each column is a security from `events_by_sid` where
-        the values are the dates of the previous event that occurred on the date
-        of the index. Entries falling before the first date will have `NaT` as
-        the result in the output.
+        the values are the dates of the previous event that occurred on the
+        date of the index. Entries falling before the first date will have
+        `NaT` as the result in the output.
 
     See Also
     --------

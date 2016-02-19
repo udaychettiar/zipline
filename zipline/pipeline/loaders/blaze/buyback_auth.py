@@ -143,7 +143,6 @@ class BlazeShareBuybackAuthorizationsLoader(BlazeEventsLoader):
         SHARE_COUNT_FIELD_NAME,
     })
 
-
     def __init__(self,
                  expr,
                  resources=None,
