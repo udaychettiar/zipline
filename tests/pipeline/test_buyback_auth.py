@@ -1,5 +1,5 @@
 """
-Tests for the reference loader for EarningsCalendar.
+Tests for the reference loader for Buyback Authorizations.
 """
 from functools import partial
 from unittest import TestCase
