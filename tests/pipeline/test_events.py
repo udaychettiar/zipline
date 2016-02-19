@@ -100,7 +100,6 @@ class EventLoaderTestCase(TestCase):
         events_by_sid = {0: pd.DataFrame({ANNOUNCEMENT_FIELD_NAME: dtx})}
         assert_loader_error(events_by_sid, TypeError, ABSTRACT_METHODS_ERROR)
 
-
     def test_wrong_cols(self):
         wrong_col_name = 'some_other_col'
         # Test wrong cols (cols != expected)
