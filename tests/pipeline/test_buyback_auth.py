@@ -138,13 +138,12 @@ class CashBuybackAuthLoaderTestCase(TestCase, EventLoaderCommonTest):
             ),
             4: zip_with_floats_dates(['NaN'] * len(dates)),
         }, index=dates)
-        self.cols[PREVIOUS_BUYBACK_ANNOUNCEMENT] = self.get_expected_previous_event_dates(
-            dates)
+        self.cols[PREVIOUS_BUYBACK_ANNOUNCEMENT] = \
+            self.get_expected_previous_event_dates(dates)
         self.cols[PREVIOUS_BUYBACK_CASH] = _expected_previous_cash
         self.cols[DAYS_SINCE_PREV] = self._compute_busday_offsets(
             self.cols[PREVIOUS_BUYBACK_ANNOUNCEMENT]
         )
-
 
     @parameterized.expand(param_dates)
     def test_compute_cash_buyback_auth(self, dates):
@@ -172,8 +171,8 @@ class ShareBuybackAuthLoaderTestCase(EventLoaderCommonTest, TestCase):
         )
         cls.cols = {}
         cls.dataset = {sid: df.drop(CASH_FIELD_NAME, 1)
-                                      for sid, df in
-                                      enumerate(buyback_authorizations)}
+                       for sid, df in
+                       enumerate(buyback_authorizations)}
         cls.loader_type = ShareBuybackAuthorizationsLoader
 
     @classmethod
