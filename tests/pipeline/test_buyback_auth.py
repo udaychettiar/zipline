@@ -14,6 +14,13 @@ from pandas.util.testing import assert_series_equal
 from six import iteritems
 
 from zipline.pipeline import Pipeline
+from zipline.pipeline.common import(
+    BUYBACK_ANNOUNCEMENT_FIELD_NAME,
+    SHARE_COUNT_FIELD_NAME,
+    SID_FIELD_NAME,
+    TS_FIELD_NAME,
+    CASH_FIELD_NAME
+)
 from zipline.pipeline.data import (CashBuybackAuthorizations,
                                    ShareBuybackAuthorizations)
 from zipline.pipeline.engine import SimplePipelineEngine
@@ -26,11 +33,6 @@ from zipline.pipeline.loaders.buyback_auth import \
 from zipline.pipeline.loaders.blaze import (
     BlazeCashBuybackAuthorizationsLoader,
     BlazeShareBuybackAuthorizationsLoader,
-    BUYBACK_ANNOUNCEMENT_FIELD_NAME,
-    SHARE_COUNT_FIELD_NAME,
-    SID_FIELD_NAME,
-    TS_FIELD_NAME,
-    CASH_FIELD_NAME
 )
 from zipline.utils.numpy_utils import make_datetime64D, NaTD
 from zipline.utils.test_utils import (

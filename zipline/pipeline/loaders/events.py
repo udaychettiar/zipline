@@ -6,6 +6,7 @@ from toolz import merge
 from .base import PipelineLoader
 from .frame import DataFrameLoader
 from .utils import next_date_frame, previous_date_frame, previous_value
+from zipline.pipeline.common import SID_FIELD_NAME, TS_FIELD_NAME
 
 WRONG_COLS_ERROR = "Expected columns %s for sid %s but got columns %s."
 
@@ -24,9 +25,6 @@ DF_NO_TS_NOT_INFER_TS_ERROR = ("Got DataFrame without a '%r' column for sid "
                                "first date in `all_dates` as implicit "
                                "timestamp.")
 
-TS_FIELD_NAME = "timestamp"
-SID_FIELD_NAME = "sid"
-
 
 class EventsLoader(PipelineLoader):
     """
@@ -38,8 +36,7 @@ class EventsLoader(PipelineLoader):
     ----------
     all_dates : pd.DatetimeIndex
         Index of dates for which we can serve queries.
-    events_by_sid : dict[int -> pd.DataFrame], dict[int -> pd.Series],
-    or dict[int -> pd.DatetimeIndex]
+    events_by_sid : dict[int -> pd.DataFrame or pd.Series or pd.DatetimeIndex]
         Dict mapping sids to objects representing dates on which earnings
         occurred.
 
@@ -65,8 +62,7 @@ class EventsLoader(PipelineLoader):
         Whether to allow omitting the "timestamp" column.
     dataset : DataSet
         The DataSet object for which this loader loads data.
-    expected_cols : frozenset
-        Set of expected columns for the dataset, without timestamp.
+
     """
 
     @abc.abstractproperty

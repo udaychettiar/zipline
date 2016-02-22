@@ -3,12 +3,14 @@ import abc
 from datashape import istabular
 
 from .core import (
-    TS_FIELD_NAME,
-    SID_FIELD_NAME,
     bind_expression_to_resources,
     ffill_query_in_range,
 )
 from zipline.pipeline.loaders.base import PipelineLoader
+from zipline.pipeline.common import (
+    SID_FIELD_NAME,
+    TS_FIELD_NAME,
+)
 from zipline.pipeline.loaders.utils import (
     check_data_query_args,
     normalize_data_query_bounds,

@@ -1,4 +1,4 @@
-from .core import (
+from zipline.pipeline.common import (
     ANNOUNCEMENT_FIELD_NAME,
     TS_FIELD_NAME,
     SID_FIELD_NAME

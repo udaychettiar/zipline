@@ -7,6 +7,10 @@ import blaze as bz
 import pandas as pd
 from pandas.util.testing import assert_series_equal, TestCase, assertRaises
 
+from zipline.pipeline.common import (
+    SID_FIELD_NAME,
+    TS_FIELD_NAME
+)
 from zipline.pipeline.data import DataSet, Column
 from zipline.pipeline.loaders.blaze.events import BlazeEventsLoader
 from zipline.pipeline.loaders.events import (
@@ -15,8 +19,6 @@ from zipline.pipeline.loaders.events import (
     DTINDEX_NOT_INFER_TS_ERROR,
     EventsLoader,
     SERIES_NO_DTINDEX_ERROR,
-    SID_FIELD_NAME,
-    TS_FIELD_NAME,
     WRONG_COLS_ERROR,
 )
 from zipline.utils.memoize import lazyval
