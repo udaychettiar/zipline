@@ -16,11 +16,13 @@ from six import iteritems
 from zipline.pipeline import Pipeline
 from zipline.pipeline.common import(
     BUYBACK_ANNOUNCEMENT_FIELD_NAME,
+    CASH_FIELD_NAME,
+    DAYS_SINCE_PREV,
+    PREVIOUS_BUYBACK_ANNOUNCEMENT,
+    PREVIOUS_BUYBACK_SHARE_COUNT,
     SHARE_COUNT_FIELD_NAME,
     SID_FIELD_NAME,
-    TS_FIELD_NAME,
-    CASH_FIELD_NAME
-)
+    TS_FIELD_NAME)
 from zipline.pipeline.data import (CashBuybackAuthorizations,
                                    ShareBuybackAuthorizations)
 from zipline.pipeline.engine import SimplePipelineEngine
@@ -42,7 +44,6 @@ from zipline.utils.test_utils import (
     tmp_asset_finder,
 )
 
-
 sids = A, B, C, D, E = range(5)
 
 equity_info = make_simple_equity_info(
@@ -52,25 +53,25 @@ equity_info = make_simple_equity_info(
 )
 
 buyback_authorizations = {
-    # K1--K2--A1--A2--SC1--SC2--V1--V2.
+    # K1--K2--A1--A2.
     A: pd.DataFrame({
-        "timestamp": pd.to_datetime(['2014-01-05', '2014-01-10']),
+        TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-10']),
         BUYBACK_ANNOUNCEMENT_FIELD_NAME: pd.to_datetime(['2014-01-15',
                                                          '2014-01-20']),
         SHARE_COUNT_FIELD_NAME: [1, 15],
         CASH_FIELD_NAME: [10, 20]
     }),
-    # K1--K2--E2--E1.
+    # K1--K2--A2--A1.
     B: pd.DataFrame({
-        "timestamp": pd.to_datetime(['2014-01-05', '2014-01-10']),
+        TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-10']),
         BUYBACK_ANNOUNCEMENT_FIELD_NAME: pd.to_datetime([
             '2014-01-20', '2014-01-15'
         ]),
         SHARE_COUNT_FIELD_NAME: [7, 13], CASH_FIELD_NAME: [10, 22]
     }),
-    # K1--E1--K2--E2.
+    # K1--A1--K2--A2.
     C: pd.DataFrame({
-        "timestamp": pd.to_datetime(['2014-01-05', '2014-01-15']),
+        TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-15']),
         BUYBACK_ANNOUNCEMENT_FIELD_NAME: pd.to_datetime([
             '2014-01-10', '2014-01-20'
         ]),
@@ -79,7 +80,7 @@ buyback_authorizations = {
     }),
     # K1 == K2.
     D: pd.DataFrame({
-        "timestamp": pd.to_datetime(['2014-01-05'] * 2),
+        TS_FIELD_NAME: pd.to_datetime(['2014-01-05'] * 2),
         BUYBACK_ANNOUNCEMENT_FIELD_NAME: pd.to_datetime([
             '2014-01-10', '2014-01-15'
         ]),
@@ -87,7 +88,7 @@ buyback_authorizations = {
         CASH_FIELD_NAME: [1, 2]
     }),
     E: pd.DataFrame(
-        columns=["timestamp",
+        columns=[TS_FIELD_NAME,
                  BUYBACK_ANNOUNCEMENT_FIELD_NAME,
                  SHARE_COUNT_FIELD_NAME,
                  CASH_FIELD_NAME],
@@ -199,7 +200,7 @@ class BuybackAuthLoaderCommonTest(object):
         self.cols[
             'previous_buyback_announcement'
         ] = _expected_previous_buyback_announcement
-        self.cols['days_since_prev'] = _expected_previous_busday_offsets
+        self.cols[DAYS_SINCE_PREV] = _expected_previous_busday_offsets
 
     @staticmethod
     def _compute_busday_offsets(announcement_dates):
@@ -267,7 +268,7 @@ class CashBuybackAuthLoaderTestCase(TestCase, BuybackAuthLoaderCommonTest):
             CashBuybackAuthorizations.previous_value.latest,
         'previous_buyback_announcement':
             CashBuybackAuthorizations.previous_announcement_date.latest,
-        'days_since_prev':
+        DAYS_SINCE_PREV:
             BusinessDaysSincePreviousCashBuybackAuth(),
     }
 
@@ -328,11 +329,11 @@ class ShareBuybackAuthLoaderTestCase(BuybackAuthLoaderCommonTest, TestCase):
     Test for share buyback authorizations dataset.
     """
     pipeline_columns = {
-        'previous_buyback_share_count':
+        ('%s' % PREVIOUS_BUYBACK_SHARE_COUNT):
             ShareBuybackAuthorizations.previous_share_count.latest,
-        'previous_buyback_announcement':
+        ('%s' % PREVIOUS_BUYBACK_ANNOUNCEMENT):
             ShareBuybackAuthorizations.previous_announcement_date.latest,
-        'days_since_prev':
+        DAYS_SINCE_PREV:
             BusinessDaysSincePreviousShareBuybackAuth(),
     }
 
@@ -380,7 +381,7 @@ class ShareBuybackAuthLoaderTestCase(BuybackAuthLoaderCommonTest, TestCase):
             E: zip_with_floats_dates(['NaN'] * len(dates)),
         }, index=dates)
         self.cols[
-            'previous_buyback_share_count'
+            PREVIOUS_BUYBACK_SHARE_COUNT
         ] = _expected_previous_buyback_share_count
 
     @parameterized.expand(param_dates)
