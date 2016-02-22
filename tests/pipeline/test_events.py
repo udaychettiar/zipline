@@ -204,14 +204,6 @@ class BlazeEventLoaderTestCase(TestCase):
             TestCase.assertTrue(ABSTRACT_METHODS_ERROR in context.exception)
 
 
-
-
-
-
-
-##########################
-
-
 # Must be a list - can't use generator since this needs to be used more than
 # once.
 param_dates = list(gen_calendars(
@@ -268,7 +260,40 @@ class EventLoaderCommonTest(object):
         loader = self.loader_type(*self.loader_args(dates))
         return SimplePipelineEngine(lambda _: loader, dates, self.finder)
 
-    def get_expected_previous(self, dates):
+    def get_expected_next_event_dates(self, dates):
+        num_days_between_for_dates = partial(self.num_days_between, dates)
+        zip_with_dates_for_dates = partial(self.zip_with_dates, dates)
+        return pd.DataFrame({
+            0: zip_with_dates_for_dates(
+                ['NaT'] * num_days_between_for_dates(None, '2014-01-04') +
+                ['2014-01-15'] * num_days_between_for_dates('2014-01-05', '2014-01-15') +
+                ['2014-01-20'] * num_days_between_for_dates('2014-01-16', '2014-01-20') +
+                ['NaT'] * num_days_between_for_dates('2014-01-21', None)
+            ),
+            1: zip_with_dates_for_dates(
+                ['NaT'] * num_days_between_for_dates(None, '2014-01-04') +
+                ['2014-01-20'] * num_days_between_for_dates('2014-01-05', '2014-01-09') +
+                ['2014-01-15'] * num_days_between_for_dates('2014-01-10', '2014-01-15') +
+                ['2014-01-20'] * num_days_between_for_dates('2014-01-16', '2014-01-20') +
+                ['NaT'] * num_days_between_for_dates('2014-01-21', None)
+            ),
+            2: zip_with_dates_for_dates(
+                ['NaT'] * num_days_between_for_dates(None, '2014-01-04') +
+                ['2014-01-10'] * num_days_between_for_dates('2014-01-05', '2014-01-10') +
+                ['NaT'] * num_days_between_for_dates('2014-01-11', '2014-01-14') +
+                ['2014-01-20'] * num_days_between_for_dates('2014-01-15', '2014-01-20') +
+                ['NaT'] * num_days_between_for_dates('2014-01-21', None)
+            ),
+            3: zip_with_dates_for_dates(
+                ['NaT'] * num_days_between_for_dates(None, '2014-01-04') +
+                ['2014-01-10'] * num_days_between_for_dates('2014-01-05', '2014-01-10') +
+                ['2014-01-15'] * num_days_between_for_dates('2014-01-11', '2014-01-15') +
+                ['NaT'] * num_days_between_for_dates('2014-01-16', None)
+            ),
+            4: zip_with_dates_for_dates(['NaT'] * len(dates)),
+        }, index=dates)
+
+    def get_expected_previous_event_dates(self, dates):
         num_days_between_for_dates = partial(self.num_days_between, dates)
         zip_with_dates_for_dates = partial(self.zip_with_dates, dates)
         return pd.DataFrame({
@@ -339,7 +364,7 @@ class EventLoaderCommonTest(object):
             index=announcement_dates.index,
         )
 
-    def _test_compute_buyback_auth(self, dates):
+    def _test_compute(self, dates):
         engine = self.setup_engine(dates)
         self.setup(dates)
 
