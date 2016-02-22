@@ -19,6 +19,7 @@ from zipline.pipeline.common import(
     CASH_FIELD_NAME,
     DAYS_SINCE_PREV,
     PREVIOUS_BUYBACK_ANNOUNCEMENT,
+    PREVIOUS_BUYBACK_CASH,
     PREVIOUS_BUYBACK_SHARE_COUNT,
     SHARE_COUNT_FIELD_NAME,
     SID_FIELD_NAME,
@@ -198,7 +199,7 @@ class BuybackAuthLoaderCommonTest(object):
         # Common cols for buyback authorization datasets are announcement
         # date and days since previous.
         self.cols[
-            'previous_buyback_announcement'
+            PREVIOUS_BUYBACK_ANNOUNCEMENT
         ] = _expected_previous_buyback_announcement
         self.cols[DAYS_SINCE_PREV] = _expected_previous_busday_offsets
 
@@ -264,9 +265,9 @@ class CashBuybackAuthLoaderTestCase(TestCase, BuybackAuthLoaderCommonTest):
     Test for cash buyback authorizations dataset.
     """
     pipeline_columns = {
-        'previous_buyback_cash':
+        ('%s' % PREVIOUS_BUYBACK_CASH):
             CashBuybackAuthorizations.previous_value.latest,
-        'previous_buyback_announcement':
+        PREVIOUS_BUYBACK_ANNOUNCEMENT:
             CashBuybackAuthorizations.previous_announcement_date.latest,
         DAYS_SINCE_PREV:
             BusinessDaysSincePreviousCashBuybackAuth(),
@@ -317,7 +318,7 @@ class CashBuybackAuthLoaderTestCase(TestCase, BuybackAuthLoaderCommonTest):
             ),
             E: zip_with_floats_dates(['NaN'] * len(dates)),
         }, index=dates)
-        self.cols['previous_buyback_cash'] = _expected_previous_cash
+        self.cols[PREVIOUS_BUYBACK_CASH] = _expected_previous_cash
 
     @parameterized.expand(param_dates)
     def test_compute_cash_buyback_auth(self, dates):
