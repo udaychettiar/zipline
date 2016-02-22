@@ -15,8 +15,12 @@ from six import iteritems
 from zipline.pipeline import Pipeline
 from zipline.pipeline.common import (
     ANNOUNCEMENT_FIELD_NAME,
+    DAYS_SINCE_PREV,
+    DAYS_TO_NEXT,
+    NEXT_ANNOUNCEMENT,
+    PREVIOUS_ANNOUNCEMENT,
     SID_FIELD_NAME,
-    TS_FIELD_NAME,
+    TS_FIELD_NAME
 )
 from zipline.pipeline.data import EarningsCalendar
 from zipline.pipeline.engine import SimplePipelineEngine
@@ -59,30 +63,30 @@ class EarningsCalendarLoaderTestCase(TestCase):
         cls.earnings_dates = {
             # K1--K2--E1--E2.
             A: pd.DataFrame({
-                "timestamp": pd.to_datetime(['2014-01-05', '2014-01-10']),
+                TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-10']),
                 ANNOUNCEMENT_FIELD_NAME: pd.to_datetime(['2014-01-15',
                                                          '2014-01-20'])
             }),
             # K1--K2--E2--E1.
             B: pd.DataFrame({
-                "timestamp": pd.to_datetime(['2014-01-05', '2014-01-10']),
+                TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-10']),
                 ANNOUNCEMENT_FIELD_NAME: pd.to_datetime(['2014-01-20',
                                                          '2014-01-15'])
             }),
             # K1--E1--K2--E2.
             C: pd.DataFrame({
-                "timestamp": pd.to_datetime(['2014-01-05', '2014-01-15']),
+                TS_FIELD_NAME: pd.to_datetime(['2014-01-05', '2014-01-15']),
                 ANNOUNCEMENT_FIELD_NAME: pd.to_datetime(['2014-01-10',
                                                          '2014-01-20'])
             }),
             # K1 == K2.
             D: pd.DataFrame({
-                "timestamp": pd.to_datetime(['2014-01-05'] * 2),
+                TS_FIELD_NAME: pd.to_datetime(['2014-01-05'] * 2),
                 ANNOUNCEMENT_FIELD_NAME: pd.to_datetime(['2014-01-10',
                                                          '2014-01-15'])
             }),
             E: pd.DataFrame({
-                "timestamp": pd.to_datetime([]),
+                TS_FIELD_NAME: pd.to_datetime([]),
                 ANNOUNCEMENT_FIELD_NAME: pd.to_datetime([])
             })
         }
@@ -278,10 +282,14 @@ class EarningsCalendarLoaderTestCase(TestCase):
 
         pipe = Pipeline(
             columns={
-                'next': EarningsCalendar.next_announcement.latest,
-                'previous': EarningsCalendar.previous_announcement.latest,
-                'days_to_next': BusinessDaysUntilNextEarnings(),
-                'days_since_prev': BusinessDaysSincePreviousEarnings(),
+                ('%s' % NEXT_ANNOUNCEMENT):
+                    EarningsCalendar.next_announcement.latest,
+                ('%s' % PREVIOUS_ANNOUNCEMENT):
+                    EarningsCalendar.previous_announcement.latest,
+                ('%s' % DAYS_TO_NEXT):
+                    BusinessDaysUntilNextEarnings(),
+                DAYS_SINCE_PREV:
+                    BusinessDaysSincePreviousEarnings(),
             }
         )
 
@@ -291,10 +299,10 @@ class EarningsCalendarLoaderTestCase(TestCase):
             end_date=dates[-1],
         )
 
-        computed_next = result['next']
-        computed_previous = result['previous']
-        computed_next_busday_offset = result['days_to_next']
-        computed_previous_busday_offset = result['days_since_prev']
+        computed_next = result[NEXT_ANNOUNCEMENT]
+        computed_previous = result[PREVIOUS_ANNOUNCEMENT]
+        computed_next_busday_offset = result[DAYS_TO_NEXT]
+        computed_previous_busday_offset = result[DAYS_SINCE_PREV]
 
         # NaTs in next/prev should correspond to NaNs in offsets.
         assert_series_equal(
