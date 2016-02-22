@@ -150,11 +150,13 @@ class EventLoaderTestCase(TestCase):
 
     @parameterized.expand([
         # DataFrame without timestamp column and infer_timestamps = True
-        [pd.DataFrame({ANNOUNCEMENT_FIELD_NAME: dtx}), False,
+        [pd.DataFrame({ANNOUNCEMENT_FIELD_NAME: dtx}),
+         False,
          DF_NO_TS_NOT_INFER_TS_ERROR.format(
              timestamp_column_name=TS_FIELD_NAME,
              sid=0
-         )],
+         )
+         ],
         # DatetimeIndex with infer_timestamps = False
         [pd.DatetimeIndex(dtx, name=ANNOUNCEMENT_FIELD_NAME), False,
          DTINDEX_NOT_INFER_TS_ERROR.format(sid=0)],
